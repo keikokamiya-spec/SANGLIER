@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "SANGLIER",
+      "runtimeExecutable": "/opt/homebrew/bin/node",
+      "runtimeArgs": ["/tmp/sanglier-preview/server.mjs"],
+      "port": 3456
+    }
+  ]
+}

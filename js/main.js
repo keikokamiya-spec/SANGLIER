@@ -68,27 +68,6 @@
 
   revealEls.forEach(function (el) { revealObserver.observe(el); });
 
-  /* ---------- Instagram grid items: stagger reveal ---------- */
-  const igItems = document.querySelectorAll('.instagram__item');
-  const igObserver = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-          igObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.1 }
-  );
-  igItems.forEach(function (item, i) {
-    item.style.opacity = '0';
-    item.style.transform = 'translateY(20px)';
-    item.style.transition = 'opacity .5s ease ' + (i * 0.07) + 's, transform .5s ease ' + (i * 0.07) + 's';
-    igObserver.observe(item);
-  });
-
   /* ---------- Floating CTA: show after hero ---------- */
   const floatingCta = document.getElementById('floatingCta');
   const hero = document.getElementById('hero');
@@ -122,15 +101,111 @@
       const panel = document.getElementById('tab-' + target);
       if (panel) {
         panel.classList.add('is-active');
-        // Re-trigger reveal for newly shown cards
-        panel.querySelectorAll('.reveal').forEach(function (el) {
-          if (!el.classList.contains('is-visible')) {
-            revealObserver.observe(el);
-          }
+        // Reset slider position to first slide when switching tabs
+        const track = panel.querySelector('.menu__slider-track');
+        if (track) track.style.transform = 'translateX(0)';
+        const dots = panel.querySelectorAll('.menu__slider-dot');
+        dots.forEach(function (d, i) {
+          d.classList.toggle('is-active', i === 0);
         });
       }
     });
   });
+
+  /* ---------- Menu slider (manual, one card at a time) ---------- */
+  function initMenuSlider(panelId) {
+    var panel = document.getElementById(panelId);
+    if (!panel) return;
+
+    var track = panel.querySelector('.menu__slider-track');
+    var dots  = panel.querySelectorAll('.menu__slider-dot');
+    var cards = panel.querySelectorAll('.menu-card');
+    var total = cards.length;
+    var current = 0;
+
+    function goTo(index) {
+      current = ((index % total) + total) % total;
+      track.style.transform = 'translateX(-' + (current * 100) + '%)';
+      dots.forEach(function (d, i) {
+        d.classList.toggle('is-active', i === current);
+      });
+    }
+
+    var btnPrev = panel.querySelector('.menu__slider-btn--prev');
+    var btnNext = panel.querySelector('.menu__slider-btn--next');
+
+    if (btnPrev) btnPrev.addEventListener('click', function () { goTo(current - 1); });
+    if (btnNext) btnNext.addEventListener('click', function () { goTo(current + 1); });
+
+    dots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () { goTo(i); });
+    });
+
+    // Touch / swipe support
+    var touchStartX = 0;
+    track.addEventListener('touchstart', function (e) {
+      touchStartX = e.changedTouches[0].clientX;
+    }, { passive: true });
+    track.addEventListener('touchend', function (e) {
+      var diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+    }, { passive: true });
+  }
+
+  initMenuSlider('tab-tofa');
+  initMenuSlider('tab-drink');
+
+  /* ---------- Instagram slider (auto, 3-second interval) ---------- */
+  (function () {
+    var slider = document.querySelector('.ig-slider');
+    if (!slider) return;
+
+    var track  = slider.querySelector('.ig-slider__track');
+    var dots   = slider.querySelectorAll('.ig-slider__dot');
+    var total  = dots.length;
+    var current = 0;
+    var timer;
+
+    function goTo(index) {
+      current = ((index % total) + total) % total;
+      track.style.transform = 'translateX(-' + (current * 100) + '%)';
+      dots.forEach(function (d, i) {
+        d.classList.toggle('is-active', i === current);
+      });
+    }
+
+    function startAuto() {
+      timer = setInterval(function () { goTo(current + 1); }, 3000);
+    }
+    function stopAuto() { clearInterval(timer); }
+
+    // Pause on hover
+    slider.addEventListener('mouseenter', stopAuto);
+    slider.addEventListener('mouseleave', startAuto);
+
+    // Dot click
+    dots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () {
+        stopAuto();
+        goTo(i);
+        startAuto();
+      });
+    });
+
+    // Touch / swipe support
+    var touchStartX = 0;
+    track.addEventListener('touchstart', function (e) {
+      touchStartX = e.changedTouches[0].clientX;
+      stopAuto();
+    }, { passive: true });
+    track.addEventListener('touchend', function (e) {
+      var diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+      startAuto();
+    }, { passive: true });
+
+    startAuto();
+  })();
 
   /* ---------- Active nav link on scroll ---------- */
   const sections = document.querySelectorAll('section[id]');
