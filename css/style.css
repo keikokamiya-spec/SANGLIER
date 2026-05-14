@@ -244,27 +244,20 @@ address { font-style: normal; }
 }
 .header__logo {
   display: flex;
-  flex-direction: column;
-  line-height: 1;
-  gap: 3px;
+  align-items: center;
 }
-.header__logo-en {
-  font-family: var(--font-en);
-  font-size: 1.5rem;
-  font-weight: 400;
-  letter-spacing: .15em;
-  color: var(--white);
-  transition: color var(--transition);
+.header__logo-img {
+  height: 44px;
+  width: auto;
+  display: block;
+  transition: opacity var(--transition);
 }
-.header.is-scrolled .header__logo-en { color: var(--white); }
-.header__logo-ja {
-  font-family: var(--font-jp-serif);
-  font-size: .6rem;
-  letter-spacing: .25em;
-  color: rgba(255,255,255,.7);
-  transition: color var(--transition);
+.header__logo-img:hover {
+  opacity: .85;
 }
-.header.is-scrolled .header__logo-ja { color: rgba(255,255,255,.7); }
+@media (max-width: 480px) {
+  .header__logo-img { height: 36px; }
+}
 
 .header__nav-list {
   display: flex;
