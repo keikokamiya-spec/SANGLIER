@@ -9,6 +9,7 @@
   const header = document.getElementById('header');
 
   function onScroll() {
+    if (!header) return;
     if (window.scrollY > 60) {
       header.classList.add('is-scrolled');
     } else {
@@ -22,22 +23,33 @@
   const hamburger = document.getElementById('hamburger');
   const nav = document.getElementById('nav');
 
-  hamburger.addEventListener('click', function () {
-    const isOpen = nav.classList.toggle('is-open');
-    hamburger.classList.toggle('is-open', isOpen);
-    hamburger.setAttribute('aria-expanded', String(isOpen));
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-  });
+  function closeNav() {
+    if (!hamburger || !nav) return;
+    nav.classList.remove('is-open');
+    hamburger.classList.remove('is-open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'メニューを開く');
+    document.body.style.overflow = '';
+  }
 
-  // Close nav when link clicked
-  nav.querySelectorAll('.header__nav-link').forEach(function (link) {
-    link.addEventListener('click', function () {
-      nav.classList.remove('is-open');
-      hamburger.classList.remove('is-open');
-      hamburger.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
+  if (hamburger && nav) {
+    hamburger.addEventListener('click', function () {
+      const isOpen = nav.classList.toggle('is-open');
+      hamburger.classList.toggle('is-open', isOpen);
+      hamburger.setAttribute('aria-expanded', String(isOpen));
+      hamburger.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
+      document.body.style.overflow = isOpen ? 'hidden' : '';
     });
-  });
+
+    // Close nav when link clicked
+    nav.querySelectorAll('.header__nav-link').forEach(function (link) {
+      link.addEventListener('click', closeNav);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeNav();
+    });
+  }
 
   /* ---------- Smooth scroll for anchor links ---------- */
   document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
@@ -45,7 +57,7 @@
       const target = document.querySelector(this.getAttribute('href'));
       if (!target) return;
       e.preventDefault();
-      const headerH = header.offsetHeight;
+      const headerH = header ? header.offsetHeight : 0;
       const top = target.getBoundingClientRect().top + window.scrollY - headerH;
       window.scrollTo({ top, behavior: 'smooth' });
     });
@@ -72,49 +84,24 @@
   const floatingCta = document.getElementById('floatingCta');
   const hero = document.getElementById('hero');
 
-  const heroObserver = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) {
-          floatingCta.classList.add('is-visible');
-        } else {
-          floatingCta.classList.remove('is-visible');
-        }
-      });
-    },
-    { threshold: 0 }
-  );
-  if (hero) heroObserver.observe(hero);
-
-  /* ---------- Menu tab switching ---------- */
-  const tabs = document.querySelectorAll('.menu__tab');
-  const panels = document.querySelectorAll('.menu__panel');
-
-  tabs.forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      const target = this.dataset.tab;
-
-      tabs.forEach(function (t) { t.classList.remove('is-active'); });
-      panels.forEach(function (p) { p.classList.remove('is-active'); });
-
-      this.classList.add('is-active');
-      const panel = document.getElementById('tab-' + target);
-      if (panel) {
-        panel.classList.add('is-active');
-        // Reset slider position to first slide when switching tabs
-        const track = panel.querySelector('.menu__slider-track');
-        if (track) track.style.transform = 'translateX(0)';
-        const dots = panel.querySelectorAll('.menu__slider-dot');
-        dots.forEach(function (d, i) {
-          d.classList.toggle('is-active', i === 0);
+  if (floatingCta && hero) {
+    const heroObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) {
+            floatingCta.classList.add('is-visible');
+          } else {
+            floatingCta.classList.remove('is-visible');
+          }
         });
-      }
-    });
-  });
+      },
+      { threshold: 0 }
+    );
+    heroObserver.observe(hero);
+  }
 
   /* ---------- Menu slider (manual, one card at a time) ---------- */
-  function initMenuSlider(panelId) {
-    var panel = document.getElementById(panelId);
+  function initMenuSlider(panel) {
     if (!panel) return;
 
     var track = panel.querySelector('.menu__slider-track');
@@ -122,6 +109,8 @@
     var cards = panel.querySelectorAll('.menu-card');
     var total = cards.length;
     var current = 0;
+
+    if (!track || !total) return;
 
     function goTo(index) {
       current = ((index % total) + total) % total;
@@ -152,8 +141,7 @@
     }, { passive: true });
   }
 
-  initMenuSlider('tab-tofa');
-  initMenuSlider('tab-drink');
+  document.querySelectorAll('.menu__panel').forEach(initMenuSlider);
 
   /* ---------- Instagram slider (auto, 3-second interval) ---------- */
   (function () {

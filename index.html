@@ -86,7 +86,7 @@
           </h2>
           <div class="about__divider"></div>
           <p class="about__text">
-            店主が香港に住んでいた頃（2002〜2006年）、街の至るところで食べた<strong>豆花（トーファ）</strong>。
+            店主が香港に住んでいた頃（2002〜2009年）、街の至るところで食べた<strong>豆花（トーファ）</strong>。
             なめらかで、やさしくて、それでいて滋味深いその味に、すっかり魅了されました。
           </p>
           <p class="about__text">
@@ -165,14 +165,8 @@
         <small>※メニュー・価格は変更になる場合があります。最新情報はInstagramをご確認ください。</small>
       </p>
 
-      <!-- タブ切替 -->
-      <div class="menu__tabs reveal">
-        <button class="menu__tab is-active" data-tab="tofa">豆花</button>
-        <button class="menu__tab" data-tab="drink">ドリンク</button>
-      </div>
-
-      <!-- 豆花カード -->
-      <div class="menu__panel is-active" id="tab-tofa">
+      <!-- メニューカード -->
+      <div class="menu__panel reveal" id="menu-items">
         <div class="menu__slider">
           <div class="menu__slider-track">
 
@@ -232,6 +226,19 @@
               </div>
             </article>
 
+            <article class="menu-card">
+              <div class="menu-card__img-wrap">
+                <img src="img/food/スクリーンショット 2026-03-30 143155.png" alt="コーヒー" class="menu-card__img" loading="lazy">
+              </div>
+              <div class="menu-card__body">
+                <h3 class="menu-card__name">スペシャルティーコーヒー</h3>
+                <p class="menu-card__desc">豆花との相性を考えて選んだ、やさしい口当たりのコーヒー。</p>
+                <div class="menu-card__tags">
+                  <span class="tag">HOT / ICE</span>
+                </div>
+              </div>
+            </article>
+
           </div><!-- /.menu__slider-track -->
           <button class="menu__slider-btn menu__slider-btn--prev" aria-label="前へ">&#8249;</button>
           <button class="menu__slider-btn menu__slider-btn--next" aria-label="次へ">&#8250;</button>
@@ -240,63 +247,7 @@
             <button class="menu__slider-dot" aria-label="2枚目"></button>
             <button class="menu__slider-dot" aria-label="3枚目"></button>
             <button class="menu__slider-dot" aria-label="4枚目"></button>
-          </div>
-        </div><!-- /.menu__slider -->
-      </div>
-
-      <!-- ドリンクカード -->
-      <div class="menu__panel" id="tab-drink">
-        <div class="menu__slider">
-          <div class="menu__slider-track">
-
-            <article class="menu-card">
-              <div class="menu-card__img-wrap">
-                <img src="img/food/スクリーンショット 2026-03-30 143155.png" alt="コーヒー" class="menu-card__img" loading="lazy">
-              </div>
-              <div class="menu-card__body">
-                <h3 class="menu-card__name">コーヒー</h3>
-                <p class="menu-card__desc">豆花との相性を考えて選んだ、やさしい口当たりのコーヒー。</p>
-                <div class="menu-card__tags">
-                  <span class="tag">HOT / ICE</span>
-                </div>
-              </div>
-            </article>
-
-            <article class="menu-card">
-              <div class="menu-card__img-wrap">
-                <img src="img/food/スクリーンショット 2026-03-30 143513.png" alt="ハーブティー" class="menu-card__img" loading="lazy">
-              </div>
-              <div class="menu-card__body">
-                <h3 class="menu-card__name">ハーブティー</h3>
-                <p class="menu-card__desc">豆花のやさしさに寄り添う、香り豊かなハーブティー。</p>
-                <div class="menu-card__tags">
-                  <span class="tag">HOT / ICE</span>
-                  <span class="tag">ノンカフェイン</span>
-                </div>
-              </div>
-            </article>
-
-            <article class="menu-card">
-              <div class="menu-card__img-wrap">
-                <img src="img/food/スクリーンショット 2026-03-30 143534.png" alt="豆乳ドリンク" class="menu-card__img" loading="lazy">
-              </div>
-              <div class="menu-card__body">
-                <h3 class="menu-card__name">豆乳ドリンク</h3>
-                <p class="menu-card__desc">豆花と同じ素材から生まれた、まろやかな豆乳ドリンク。</p>
-                <div class="menu-card__tags">
-                  <span class="tag">HOT / ICE</span>
-                  <span class="tag">大豆の恵み</span>
-                </div>
-              </div>
-            </article>
-
-          </div><!-- /.menu__slider-track -->
-          <button class="menu__slider-btn menu__slider-btn--prev" aria-label="前へ">&#8249;</button>
-          <button class="menu__slider-btn menu__slider-btn--next" aria-label="次へ">&#8250;</button>
-          <div class="menu__slider-dots">
-            <button class="menu__slider-dot is-active" aria-label="1枚目"></button>
-            <button class="menu__slider-dot" aria-label="2枚目"></button>
-            <button class="menu__slider-dot" aria-label="3枚目"></button>
+            <button class="menu__slider-dot" aria-label="5枚目"></button>
           </div>
         </div><!-- /.menu__slider -->
       </div>

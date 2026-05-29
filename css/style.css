@@ -290,6 +290,8 @@ address { font-style: normal; }
   display: none;
   flex-direction: column;
   gap: 5px;
+  position: relative;
+  z-index: 1001;
   background: none;
   border: none;
   cursor: pointer;
@@ -667,37 +669,9 @@ address { font-style: normal; }
 }
 .menu__lead small { font-size: .78rem; color: var(--text-light); }
 
-/* Tabs */
-.menu__tabs {
-  display: flex;
-  gap: 0;
-  width: fit-content;
-  margin: 0 auto 40px;
-  border-radius: var(--radius-full);
-  background: var(--greige-dark);
-  padding: 4px;
+.menu__panel {
+  display: block;
 }
-.menu__tab {
-  padding: 10px 32px;
-  border-radius: var(--radius-full);
-  background: none;
-  border: none;
-  font-family: var(--font-jp-serif);
-  font-size: .9rem;
-  letter-spacing: .08em;
-  cursor: pointer;
-  color: var(--text-mid);
-  transition: var(--transition);
-}
-.menu__tab.is-active {
-  background: var(--sage);
-  color: var(--white);
-  box-shadow: var(--shadow-sm);
-}
-
-/* Panel */
-.menu__panel { display: none; }
-.menu__panel.is-active { display: block; }
 
 /* ---- Menu Slider ---- */
 .menu__slider {
@@ -1129,24 +1103,41 @@ address { font-style: normal; }
    MOBILE NAV OVERLAY
    ============================================================ */
 @media (max-width: 768px) {
+  .header,
+  .header.is-scrolled {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   .header__hamburger { display: flex; }
 
   .header__nav {
     position: fixed;
-    inset: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: auto;
+    width: min(62vw, 320px);
+    min-width: 220px;
+    height: 100dvh;
+    min-height: 100dvh;
     background: rgba(242,237,232,.97);
     backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 999;
+    z-index: 1000;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--transition);
+    transform: translateX(100%);
+    box-shadow: -18px 0 40px rgba(80, 64, 46, .18);
+    transition: opacity var(--transition), transform var(--transition);
   }
   .header__nav.is-open {
     opacity: 1;
     pointer-events: all;
+    transform: translateX(0);
   }
   .header__nav-list {
     flex-direction: column;
