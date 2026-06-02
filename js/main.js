@@ -104,6 +104,8 @@
   function initMenuSlider(panel) {
     if (!panel) return;
 
+    if (panel.querySelector('.menu__slider--static')) return;
+
     var track = panel.querySelector('.menu__slider-track');
     var dots  = panel.querySelectorAll('.menu__slider-dot');
     var cards = panel.querySelectorAll('.menu-card');

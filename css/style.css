@@ -679,15 +679,28 @@ address { font-style: normal; }
   overflow: hidden;
   border-radius: var(--radius-md);
 }
+.menu__slider--static {
+  overflow: visible;
+}
 .menu__slider-track {
   display: flex;
   transition: transform .42s cubic-bezier(.4,0,.2,1);
   will-change: transform;
 }
+.menu__slider--static .menu__slider-track {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  transition: none;
+  will-change: auto;
+}
 .menu__slider-track .menu-card {
   flex: 0 0 100%;
   width: 100%;
   min-width: 0;
+}
+.menu__slider--static .menu-card {
+  width: auto;
 }
 
 /* Prev / Next buttons */
@@ -1163,6 +1176,21 @@ address { font-style: normal; }
 
   /* Menu slider: buttons slightly smaller on mobile */
   .menu__slider-btn { width: 38px; height: 38px; font-size: 1.4rem; }
+  .menu__slider--static .menu__slider-track {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 0 4px 8px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .menu__slider--static .menu__slider-track::-webkit-scrollbar {
+    display: none;
+  }
+  .menu__slider--static .menu-card {
+    flex: 0 0 84%;
+    scroll-snap-align: center;
+  }
 
   /* Instagram slider: full width on mobile */
   .ig-slider { max-width: 100%; }
